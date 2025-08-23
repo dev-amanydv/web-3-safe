@@ -1,6 +1,6 @@
-export const StepOne = () => {
+import { WelcomeScreen } from "@/components/onboarding/Welcome"
 
-    return <div>
+export default function StepOne () {
 
-    </div>
+    return <WelcomeScreen/>
 }

@@ -1,6 +1,6 @@
 export const WelcomeScreen = () => {
     
-    return <div>
+    return <div className=" h-screen justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">

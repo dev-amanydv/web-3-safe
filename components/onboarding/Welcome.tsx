@@ -1,14 +1,15 @@
 "use client";
 import { useState } from "react"
+import { FaArrowLeft } from "react-icons/fa";
 
 type welcomeScreenProps = {
   onStart: () => void;
 }
 type networkSelectScreenProps = {
-  onSelectNetwork: () => void;
+  onSelectNetwork: (networkType: string) => void;
 }
 
-export default function onBoarding () {
+export default function OnBoarding () {
 
   const [step, setStep] = useState(1);
   const [network, setNetwork] = useState("");
@@ -27,7 +28,7 @@ export default function onBoarding () {
     }
   }
 
-  const handleNetworkSelect = (networkType: "Solana" | "Ethereum" | "Bitcoin") => {
+  const handleNetworkSelect = (networkType: string) => {
     setNetwork(networkType);
     nextStep()
   }
@@ -64,15 +65,20 @@ export default function onBoarding () {
     }
   }
 
-  return <div className=" h-screen justify-between flex flex-col items-center max-w-2xl w-full">
+  return <div className="flex flex-col max-w-2xl w-full">
+    <div>
+    <FaArrowLeft />
+    </div>
+    <div className="h-[500px]">
     {renderSteps()}
+    </div>
 </div>
 
 }
 
 export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
     
-    return <div className="h-screen justify-between flex flex-col items-center max-w-2xl w-full">
+    return <div className="h-[600px] justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
@@ -97,9 +103,25 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
 
 export const NetworkSelectionScreen = ({onSelectNetwork}: networkSelectScreenProps) => {
 
-  return <div>
-    Step-2
-  </div>
+  return <div className="h-screen py-10 justify-between flex flex-col items-center max-w-2xl w-full">
+        <div className="text-white py-10 flex flex-col items-center justify-center">
+            <div className="text-2xl rounded-full text-white font-sans font-semibold">
+              Select one or more networks
+            </div>
+            <div className="text-[#969FAE] text-lg font-medium">
+              You can always change this later
+            </div>
+            <div className="flex mt-10 gap-5">
+              <button>Solana</button>
+              <button>Ethereum</button>
+            </div>
+        </div>
+        <div className="text-white flex gap-10 flex-col items-center w-full">
+          <div className="flex justify-center gap-4 w-full max-w-md flex-col">
+            <button onClick={() => onSelectNetwork(network)} className="w-full font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+          </div>
+        </div>
+    </div>
 }
 
 export const PasswordSetting = () => {

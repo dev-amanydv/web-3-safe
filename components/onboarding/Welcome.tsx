@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -69,9 +70,9 @@ export default function OnBoarding () {
 
   return <div className="flex flex-col py-10 max-w-2xl w-full">
     {step > 1 && step < 4 && (
-      <div>
+      <button className="cursor-pointer" onClick={prevStep}>
     <FaArrowLeft />
-    </div>
+    </button>
     )}
     <div className="h-[500px]">
     {renderSteps()}
@@ -81,8 +82,9 @@ export default function OnBoarding () {
 }
 
 export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
     
-    return <div className="h-[700px] justify-between flex flex-col items-center max-w-2xl w-full">
+    return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
@@ -94,35 +96,35 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex gap-5">
-            <input type="checkbox" name="Terms and Condition" id="" />
-            <h1 className="font-semibold">I agree to <span className="text-[#4C94FF]">the Terms of Service</span></h1>
+            <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} name="Terms and Condition" id="" />
+            <h1 className="font-semibold">I agree to the <span className="text-[#4C94FF]">Terms of Service</span></h1>
           </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button onClick={onStart} className="w-full font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Create a new wallet</button>
-            <button disabled={true} className="w-full disabled:text-gray-400 rounded-md font-semibold py-3  bg-[#202125] text-white">I already have a wallet</button>
+            <button disabled={!acceptedTerms} onClick={onStart} className="w-full disabled:bg-gray-400 disabled:text-gray-600 font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Create a new wallet</button>
+            <button disabled={true} className="w-full disabled:text-gray-700 cursor-no-drop disabled:bg-gray-900 rounded-md font-semibold py-3  bg-[#202125] text-white">I already have a wallet</button>
           </div>
         </div>
     </div>
 }
 
-export const NetworkSelectionScreen = ({onSelectNetwork}: networkSelectScreenProps) => {
+export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateNetwork}: networkSelectScreenProps) => {
 
-  return <div className="h-[700px] justify-between flex flex-col items-center max-w-2xl w-full">
+  return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
-              Select one or more networks
+              Select one network
             </div>
             <div className="text-[#969FAE] text-md font-medium">
               You can always change this later
             </div>
-            <div className="flex mt-10 gap-5">
-              <button value="Solana" onClick={() => setNetwork("Solana")} >Solana</button>
-              <button value="Ethereum" onClick={() => setNetwork("Ethereum")} >Ethereum</button>
+            <div className="flex mt-20 gap-5">
+              <button value="Solana" className="bg-[#14182e] cursor-pointer justify-center flex items-center gap-3 rounded-md w-40 py-2" onClick={() => updateNetwork("Solana")} ><Image priority src={"/solanaLogoMark.svg"} height={20} width={20} alt="Solana Logo"/><h1>Solana</h1></button>
+              <button value="Ethereum" className="bg-[#14182e] cursor-pointer flex justify-center items-center gap-3 rounded-md w-40 py-1" onClick={() => updateNetwork("Ethereum")} ><div><svg xmlns="http://www.w3.org/2000/svg" width=".63em" height="1em" fill="none" className="text-[22px] opacity-85 hover:opacity-100" viewBox="0 0 115 182"><path fill="#F0CDC2" stroke="#1616B4" d="M57.505 181v-45.16L1.641 103.171z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 181v-45.16l55.865-32.669z"></path><path fill="#88AAF1" stroke="#1616B4" d="M57.506 124.615V66.979L1 92.28z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 124.615V66.979l56.506 25.302z"></path><path fill="#F0CDC2" stroke="#1616B4" d="M1 92.281 57.505 1v65.979z"></path><path fill="#B8FAF6" stroke="#1616B4" d="M114.196 92.281 57.691 1v65.979z"></path></svg></div><h1>Ethereum</h1></button>
             </div>
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button onClick={() => onSelectNetwork(network)} className="w-full font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork); console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-gray-400 disabled:text-gray-600 font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
           </div>
         </div>
     </div>

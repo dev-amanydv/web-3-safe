@@ -7,6 +7,8 @@ type welcomeScreenProps = {
 }
 type networkSelectScreenProps = {
   onSelectNetwork: (networkType: string) => void;
+  currentNetwork: string;
+  updateNetwork: (args: string) => void;
 }
 
 export default function OnBoarding () {
@@ -55,7 +57,7 @@ export default function OnBoarding () {
       case 1 : 
         return <WelcomeScreen onStart={nextStep} />;
       case 2 :
-        return <NetworkSelectionScreen onSelectNetwork={handleNetworkSelect}  />;
+        return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
         return <PasswordSetting />;
       case 4 : 
@@ -65,10 +67,12 @@ export default function OnBoarding () {
     }
   }
 
-  return <div className="flex flex-col max-w-2xl w-full">
-    <div>
+  return <div className="flex flex-col py-10 max-w-2xl w-full">
+    {step > 1 && step < 4 && (
+      <div>
     <FaArrowLeft />
     </div>
+    )}
     <div className="h-[500px]">
     {renderSteps()}
     </div>
@@ -78,13 +82,13 @@ export default function OnBoarding () {
 
 export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
     
-    return <div className="h-[600px] justify-between flex flex-col items-center max-w-2xl w-full">
+    return <div className="h-[700px] justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
               Welcome to Web3Safe
             </div>
-            <div className="text-[#969FAE] text-lg font-medium">
+            <div className="text-[#969FAE] text-md font-medium">
               You can send and recieve crypto by using this wallet
             </div>
         </div>
@@ -103,17 +107,17 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
 
 export const NetworkSelectionScreen = ({onSelectNetwork}: networkSelectScreenProps) => {
 
-  return <div className="h-screen py-10 justify-between flex flex-col items-center max-w-2xl w-full">
+  return <div className="h-[700px] justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
               Select one or more networks
             </div>
-            <div className="text-[#969FAE] text-lg font-medium">
+            <div className="text-[#969FAE] text-md font-medium">
               You can always change this later
             </div>
             <div className="flex mt-10 gap-5">
-              <button>Solana</button>
-              <button>Ethereum</button>
+              <button value="Solana" onClick={() => setNetwork("Solana")} >Solana</button>
+              <button value="Ethereum" onClick={() => setNetwork("Ethereum")} >Ethereum</button>
             </div>
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">

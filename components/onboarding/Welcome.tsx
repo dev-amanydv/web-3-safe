@@ -70,8 +70,8 @@ export default function OnBoarding () {
 
   return <div className="flex flex-col py-10 max-w-2xl w-full">
     {step > 1 && step < 4 && (
-      <button className="cursor-pointer" onClick={prevStep}>
-    <FaArrowLeft />
+      <button className="cursor-pointer text-white" onClick={prevStep}>
+    <FaArrowLeft/>
     </button>
     )}
     <div className="h-[500px]">
@@ -118,8 +118,8 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
               You can always change this later
             </div>
             <div className="flex mt-20 gap-5">
-              <button value="Solana" className="bg-[#14182e] cursor-pointer justify-center flex items-center gap-3 rounded-md w-40 py-2" onClick={() => updateNetwork("Solana")} ><Image priority src={"/solanaLogoMark.svg"} height={20} width={20} alt="Solana Logo"/><h1>Solana</h1></button>
-              <button value="Ethereum" className="bg-[#14182e] cursor-pointer flex justify-center items-center gap-3 rounded-md w-40 py-1" onClick={() => updateNetwork("Ethereum")} ><div><svg xmlns="http://www.w3.org/2000/svg" width=".63em" height="1em" fill="none" className="text-[22px] opacity-85 hover:opacity-100" viewBox="0 0 115 182"><path fill="#F0CDC2" stroke="#1616B4" d="M57.505 181v-45.16L1.641 103.171z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 181v-45.16l55.865-32.669z"></path><path fill="#88AAF1" stroke="#1616B4" d="M57.506 124.615V66.979L1 92.28z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 124.615V66.979l56.506 25.302z"></path><path fill="#F0CDC2" stroke="#1616B4" d="M1 92.281 57.505 1v65.979z"></path><path fill="#B8FAF6" stroke="#1616B4" d="M114.196 92.281 57.691 1v65.979z"></path></svg></div><h1>Ethereum</h1></button>
+              <button value="Solana" className="bg-[#14182e] cursor-pointer hover:outline-2 hover:outline-[#8A8B8E] focus:outline-2 focus:outline-[#8A8B8E] active:bg-[#4a58a8] justify-center flex items-center gap-3 rounded-md w-40 py-2" onClick={() => updateNetwork("Solana")} ><Image priority src={"/solanaLogoMark.svg"} height={20} width={20} alt="Solana Logo"/><h1>Solana</h1></button>
+              <button value="Ethereum" className="bg-[#14182e] cursor-pointer hover:outline-2 hover:outline-[#8A8B8E] focus:outline-2  focus:outline-[#8A8B8E] active:bg-[#4a58a8] flex justify-center items-center gap-3 rounded-md w-40 py-1" onClick={() => updateNetwork("Ethereum")} ><div><svg xmlns="http://www.w3.org/2000/svg" width=".63em" height="1em" fill="none" className="text-[22px] opacity-85 hover:opacity-100" viewBox="0 0 115 182"><path fill="#F0CDC2" stroke="#1616B4" d="M57.505 181v-45.16L1.641 103.171z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 181v-45.16l55.865-32.669z"></path><path fill="#88AAF1" stroke="#1616B4" d="M57.506 124.615V66.979L1 92.28z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 124.615V66.979l56.506 25.302z"></path><path fill="#F0CDC2" stroke="#1616B4" d="M1 92.281 57.505 1v65.979z"></path><path fill="#B8FAF6" stroke="#1616B4" d="M114.196 92.281 57.691 1v65.979z"></path></svg></div><h1>Ethereum</h1></button>
             </div>
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">

@@ -143,10 +143,16 @@ export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}
   <div className="text-white py-10 flex flex-col items-center justify-center">
       <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
       <div className="text-2xl rounded-full text-white font-sans font-semibold">
-        Set up a password helloooo je;llpop
+        Set up a password
       </div>
-      <div className="text-[#969FAE] text-md font-medium">
+      <div className="text-[#969FAE] text-md text-center font-medium">
         It should be 4 characters long. You'll need this to unlock Web3Safe.
+      </div>
+      <div className="flex mt-10 gap-5">
+        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
       </div>
   </div>
   <div className="text-white flex gap-10 flex-col items-center w-full">

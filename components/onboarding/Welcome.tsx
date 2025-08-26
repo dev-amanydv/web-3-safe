@@ -6,17 +6,24 @@ import { FaArrowLeft } from "react-icons/fa";
 type welcomeScreenProps = {
   onStart: () => void;
 }
+
 type networkSelectScreenProps = {
   onSelectNetwork: (networkType: string) => void;
   currentNetwork: string;
   updateNetwork: (args: string) => void;
 }
 
+type passwordSetScreenProps = {
+  onSetPassword: (pass: string) => void;
+  currentPassword: string;
+  updatePassword: (args: string) => void;
+}
+
 export default function OnBoarding () {
 
   const [step, setStep] = useState(1);
   const [network, setNetwork] = useState("");
-  const [password, setPassword] = useState(0);
+  const [password, setPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
 
   const nextStep = () => {
@@ -36,7 +43,7 @@ export default function OnBoarding () {
     nextStep()
   }
 
-  const handlePassword = (pass: number) => {
+  const handlePassword = (pass: string) => {
     setPassword(pass);
     nextStep()
   }
@@ -60,7 +67,7 @@ export default function OnBoarding () {
       case 2 :
         return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
-        return <PasswordSetting />;
+        return <PasswordSetting currentPassword={password} updatePassword={setPassword} onSetPassword={handlePassword} />;
       case 4 : 
         return <CompletionScreen />;
       default: 
@@ -100,7 +107,7 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
             <h1 className="font-semibold">I agree to the <span className="text-[#4C94FF]">Terms of Service</span></h1>
           </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button disabled={!acceptedTerms} onClick={onStart} className="w-full disabled:bg-gray-400 disabled:text-gray-600 font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Create a new wallet</button>
+            <button disabled={!acceptedTerms} onClick={onStart} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Create a new wallet</button>
             <button disabled={true} className="w-full disabled:text-gray-700 cursor-no-drop disabled:bg-gray-900 rounded-md font-semibold py-3  bg-[#202125] text-white">I already have a wallet</button>
           </div>
         </div>
@@ -124,17 +131,30 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork); console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-gray-400 disabled:text-gray-600 font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork); console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
           </div>
         </div>
     </div>
 }
 
-export const PasswordSetting = () => {
+export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}: passwordSetScreenProps) => {
 
-  return <div>
-    Step-3
+  return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
+  <div className="text-white py-10 flex flex-col items-center justify-center">
+      <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
+      <div className="text-2xl rounded-full text-white font-sans font-semibold">
+        Set up a password
+      </div>
+      <div className="text-[#969FAE] text-md font-medium">
+        It should be 4 characters long. You'll need this to unlock Web3Safe.
+      </div>
   </div>
+  <div className="text-white flex gap-10 flex-col items-center w-full">
+    <div className="flex justify-center gap-4 w-full max-w-md flex-col">
+      <button disabled={!currentPassword} onClick={() => {onSetPassword(currentPassword); console.log("Password: ", currentPassword)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Next</button>
+    </div>
+  </div>
+</div>
 }
 
 export const CompletionScreen = () => {

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 
 type welcomeScreenProps = {
@@ -34,7 +34,8 @@ export default function OnBoarding () {
 
   const prevStep = () => {
     if (step > 1){
-      setStep( step - 1 )
+      setStep( step - 1 );
+      setNetwork("")
     }
   }
 
@@ -139,6 +140,12 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
 
 export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}: passwordSetScreenProps) => {
 
+  const passOneRef = useRef(null);
+  
+  if (passOneRef.current){
+    passOneRef.current.addEventListener('click', handleClick);
+  }
+
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
   <div className="text-white py-10 flex flex-col items-center justify-center">
       <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
@@ -149,7 +156,7 @@ export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}
         It should be 4 characters long. You'll need this to unlock Web3Safe.
       </div>
       <div className="flex mt-10 gap-5">
-        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+        <input type="number" ref={passOneRef} autoFocus className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
         <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
         <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
         <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />

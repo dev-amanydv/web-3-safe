@@ -140,10 +140,11 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
 
 export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}: passwordSetScreenProps) => {
 
-  const passOneRef = useRef(null);
+  const passRef = useRef<HTMLInputElement | null>([]);
   
   if (passOneRef.current){
     passOneRef.current.addEventListener('click', handleClick);
+    passOneRef.current.removeEventListener('click', handleClick);
   }
 
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">

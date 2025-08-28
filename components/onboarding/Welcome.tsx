@@ -126,7 +126,7 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
               You can always change this later
             </div>
             <div className="flex mt-20 gap-5">
-              <button value="Solana" className="bg-[#14182e] cursor-pointer hover:outline-2 hover:outline-[#8A8B8E] focus:outline-2 focus:outline-[#8A8B8E] active:bg-[#4a58a8] justify-center flex items-center gap-3 rounded-md w-40 py-2" onClick={() => updateNetwork("Solana")} ><Image priority src={"/solanaLogoMark.svg"} height={20} width={20} alt="Solana Logo"/><h1>Solana</h1></button>
+              <button value="Solana" className="bg-[#14182e] cursor-pointer hover:outline-2 hover:outline-[#8A8B8E] focus:outline-2 focus:outline-[#8A8B8E] active:bg-[#4a58a8] justify-center flex items-center gap-3 rounded-md w-40 py-2" onClick={() => updateNetwork("Solana")} ><Image priority src={"/solanaLogoMark.png"} height={20} width={20} alt="Solana Logo"/><h1>Solana</h1></button>
               <button value="Ethereum" className="bg-[#14182e] cursor-pointer hover:outline-2 hover:outline-[#8A8B8E] focus:outline-2  focus:outline-[#8A8B8E] active:bg-[#4a58a8] flex justify-center items-center gap-3 rounded-md w-40 py-1" onClick={() => updateNetwork("Ethereum")} ><div><svg xmlns="http://www.w3.org/2000/svg" width=".63em" height="1em" fill="none" className="text-[22px] opacity-85 hover:opacity-100" viewBox="0 0 115 182"><path fill="#F0CDC2" stroke="#1616B4" d="M57.505 181v-45.16L1.641 103.171z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 181v-45.16l55.865-32.669z"></path><path fill="#88AAF1" stroke="#1616B4" d="M57.506 124.615V66.979L1 92.28z"></path><path fill="#C9B3F5" stroke="#1616B4" d="M57.69 124.615V66.979l56.506 25.302z"></path><path fill="#F0CDC2" stroke="#1616B4" d="M1 92.281 57.505 1v65.979z"></path><path fill="#B8FAF6" stroke="#1616B4" d="M114.196 92.281 57.691 1v65.979z"></path></svg></div><h1>Ethereum</h1></button>
             </div>
         </div>
@@ -140,12 +140,7 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
 
 export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}: passwordSetScreenProps) => {
 
-  const passRef = useRef<HTMLInputElement | null>([]);
-  
-  if (passOneRef.current){
-    passOneRef.current.addEventListener('click', handleClick);
-    passOneRef.current.removeEventListener('click', handleClick);
-  }
+  const passRef = useRef<HTMLInputElement | null[]>([]);
 
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
   <div className="text-white py-10 flex flex-col items-center justify-center">
@@ -157,10 +152,12 @@ export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}
         It should be 4 characters long. You'll need this to unlock Web3Safe.
       </div>
       <div className="flex mt-10 gap-5">
-        <input type="number" ref={passOneRef} autoFocus className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
-        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
-        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
-        <input type="number" className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+        {
+          [0, 1, 2, 3].map((_, index) => (
+            <input type="text" key={index} maxLength={1} ref={(el) => (passRef.current[index] = el)}
+            autoFocus className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+          ))
+        }
       </div>
   </div>
   <div className="text-white flex gap-10 flex-col items-center w-full">

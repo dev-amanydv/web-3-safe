@@ -15,8 +15,6 @@ type networkSelectScreenProps = {
 
 type passwordSetScreenProps = {
   onSetPassword: (pass: string) => void;
-  currentPassword: string;
-  updatePassword: (args: string) => void;
 }
 
 export default function OnBoarding () {
@@ -68,7 +66,7 @@ export default function OnBoarding () {
       case 2 :
         return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
-        return <PasswordSetting currentPassword={password} updatePassword={setPassword} onSetPassword={handlePassword} />;
+        return <PasswordSetting onSetPassword={handlePassword} />;
       case 4 : 
         return <CompletionScreen />;
       default: 
@@ -86,7 +84,6 @@ export default function OnBoarding () {
     {renderSteps()}
     </div>
 </div>
-
 }
 
 export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
@@ -138,9 +135,28 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
     </div>
 }
 
-export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}: passwordSetScreenProps) => {
+export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
 
-  const passRef = useRef<HTMLInputElement | null[]>([]);
+  const passRef = useRef<(HTMLInputElement | null)[]>([]);
+  const setPass = useRef<HTMLButtonElement | null>(null);
+  let inputPass = "";
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+
+    const value = e.target.value;
+    console.log("OTP: ", value);
+    inputPass = inputPass + value
+    if (value && index < passRef.current.length - 1){
+      passRef.current[index + 1]?.focus();
+    }
+    if (value && index === passRef.current.length - 1){
+      setPass.current?.focus()
+    }
+    if (!value && index > 0){
+      passRef.current[index - 1]?.focus()
+    }
+    console.log(inputPass)
+
+  }
 
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
   <div className="text-white py-10 flex flex-col items-center justify-center">
@@ -154,15 +170,18 @@ export const PasswordSetting = ({onSetPassword, currentPassword, updatePassword}
       <div className="flex mt-10 gap-5">
         {
           [0, 1, 2, 3].map((_, index) => (
-            <input type="text" key={index} maxLength={1} ref={(el) => (passRef.current[index] = el)}
-            autoFocus className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+            <input type="text" key={index} maxLength={1} ref={(el) => {
+              passRef.current[index] = el;
+            }}
+            onChange={(e) => handleChange(e, index)}
+           className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
           ))
         }
       </div>
   </div>
   <div className="text-white flex gap-10 flex-col items-center w-full">
     <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-      <button disabled={!currentPassword} onClick={() => {onSetPassword(currentPassword); console.log("Password: ", currentPassword)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Next</button>
+      <button ref={setPass} disabled={inputPass.length < 4} onClick={() => {onSetPassword(inputPass);}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Next</button>
     </div>
   </div>
 </div>

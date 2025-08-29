@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Image from "next/image";
 
 const inter = Inter({
   subsets: ["latin"], // you can also add "latin-ext"
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
+        <div className="w-full fixed top-0 left-0  backdrop-blur-lg flex items-center px-10 py-10 h-15"><Image src={'/web3safeLogo.svg'} width={150} height={75} alt="Web3Safe made by Aman Yadav Full-Stack Developer" /></div>
         {children}
       </body>
     </html>

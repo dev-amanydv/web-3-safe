@@ -1,7 +1,13 @@
 "use client";
+import { Poppins } from "next/font/google";
 import Image from "next/image";
 import { useRef, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300","400", "500", "600", "700", "800"],
+});
 
 type welcomeScreenProps = {
   onStart: () => void;
@@ -87,13 +93,13 @@ export default function OnBoarding () {
 }
 
 export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
+    const [acceptedTerms, setAcceptedTerms] = useState(false)
     
     return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
-            <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
+            <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
-              Welcome to Web3Safe
+              Welcome to <span className={`${poppins.className} text-[#5090F2] font-bold`}>Web3</span><span className={`${poppins.className} font-bold`}>Safe</span>
             </div>
             <div className="text-[#969FAE] text-md font-medium">
               You can send and recieve crypto by using this wallet
@@ -102,7 +108,7 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex gap-5">
             <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} name="Terms and Condition" id="" />
-            <h1 className="font-semibold">I agree to the <span className="text-[#4C94FF]">Terms of Service</span></h1>
+            <h1 className="font-semibold">I agree to the <span className="">Terms of Service</span></h1>
           </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
             <button disabled={!acceptedTerms} onClick={onStart} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Create a new wallet</button>
@@ -139,12 +145,15 @@ export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
 
   const passRef = useRef<(HTMLInputElement | null)[]>([]);
   const setPass = useRef<HTMLButtonElement | null>(null);
-  let inputPass = "";
+  const [inputPass, setInputPass] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
 
     const value = e.target.value;
-    console.log("OTP: ", value);
-    inputPass = inputPass + value
+    setInputPass((prev) => {
+      const passArr = prev.split("");
+      passArr[index] = value;
+      return passArr.join("");
+    });
     if (value && index < passRef.current.length - 1){
       passRef.current[index + 1]?.focus();
     }
@@ -160,8 +169,8 @@ export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
 
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
   <div className="text-white py-10 flex flex-col items-center justify-center">
-      <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900">Web3Safe</div>
-      <div className="text-2xl rounded-full text-white font-sans font-semibold">
+  <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>
+  <div className="text-2xl rounded-full text-white font-sans font-semibold">
         Set up a password
       </div>
       <div className="text-[#969FAE] text-md text-center font-medium">
@@ -170,11 +179,11 @@ export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
       <div className="flex mt-10 gap-5">
         {
           [0, 1, 2, 3].map((_, index) => (
-            <input type="text" key={index} maxLength={1} ref={(el) => {
+            <input type="text" key={index} autoFocus={index == 0} maxLength={1} ref={(el) => {
               passRef.current[index] = el;
             }}
             onChange={(e) => handleChange(e, index)}
-           className="bg-gray-700 text-white  size-15 rounded-md" name="" id="" />
+           className="bg-gray-700 text-center font-bold text-xl text-white  size-15 rounded-md" name="" id="" />
           ))
         }
       </div>

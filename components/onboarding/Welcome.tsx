@@ -31,7 +31,7 @@ export default function OnBoarding () {
   const [isLoading, setisLoading] = useState(false);
 
   const nextStep = () => {
-    if ( step < 4 ) {
+    if ( step < 6 ) {
       setStep(step + 1);
     }
   }
@@ -72,11 +72,15 @@ export default function OnBoarding () {
       case 2 :
         return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
-        return <PasswordSetting onSetPassword={handlePassword} />;
+        return <GenerateSeedPhrase />;
       case 4 : 
+        return <EnterSeedPhrase />;
+      case 5 : 
+        return <PasswordSetting onSetPassword={handlePassword} />;
+      case 6 : 
         return <CompletionScreen />;
       default: 
-        return < WelcomeScreen onStart={nextStep} />;
+        return <WelcomeScreen onStart={nextStep} />;
     }
   }
 
@@ -119,6 +123,7 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
 }
 
 export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateNetwork}: networkSelectScreenProps) => {
+  const mnemonic = GenerateSeedPhrase()
 
   return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
@@ -135,10 +140,32 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork); console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork);  console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
           </div>
         </div>
     </div>
+}
+
+export const GenerateSeedPhrase =  () => {
+  return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
+        <div className="text-white py-10 flex flex-col items-center justify-center">
+            <div className="text-2xl rounded-full text-white font-sans font-semibold">
+              Secret Recovery Phrase
+            </div>
+            <div className="text-[#969FAE] text-md font-medium">
+              This phrase can be used to pull money from all wallets.
+            </div>
+        </div>
+        <div className="text-white flex gap-10 flex-col items-center w-full">
+          <div className="flex justify-center gap-4 w-full max-w-md flex-col">
+            <button className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Copy Seed Phrase</button>
+          </div>
+        </div>
+    </div>
+}
+
+export const EnterSeedPhrase = () => {
+  return <div></div>
 }
 
 export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
@@ -198,7 +225,21 @@ export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
 
 export const CompletionScreen = () => {
 
-  return <div>
-    Step-4
+  return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
+  <div className="text-white py-10 flex flex-col items-center justify-center">
+      <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>
+      <div className="text-2xl rounded-full text-white font-sans font-semibold">
+        You're all good!
+      </div>
+      <div className="text-[#969FAE] text-md font-medium">
+        You have completed the setting up of your wallet.
+      </div>
   </div>
+  <div className="text-white flex gap-10 flex-col items-center w-full">
+    
+    <div className="flex justify-center gap-4 w-full max-w-md flex-col">
+      <button onClick={() => { }} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Open <span className={`${poppins.className} text-[#316dc8]`}>Web3</span><span className={`${poppins.className}`}>Safe</span></button>
+    </div>
+  </div>
+</div>
 }

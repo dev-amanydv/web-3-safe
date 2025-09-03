@@ -124,7 +124,7 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
 
 export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateNetwork}: networkSelectScreenProps) => {
   const mnemonic = GenerateSeedPhrase()
-
+  console.log("mnemonic: ", mnemonic);
   return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
@@ -140,7 +140,7 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork);  console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+            <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork), GenerateSeedPhrase();  console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
           </div>
         </div>
     </div>
@@ -153,10 +153,17 @@ export const GenerateSeedPhrase =  () => {
               Secret Recovery Phrase
             </div>
             <div className="text-[#969FAE] text-md font-medium">
-              This phrase can be used to pull money from all wallets.
+             Save these words in a safe place.
             </div>
         </div>
+        <div>
+          <input type="text" className="w-20 h-10 bg-gray-800 text-white" />
+        </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
+          <div className="flex gap-5">
+            <input type="checkbox" name="Terms and Condition" id="" />
+            <h1 className="font-semibold">I saved my secret <span className="">Recovery Phrase</span></h1>
+          </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
             <button className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Copy Seed Phrase</button>
           </div>

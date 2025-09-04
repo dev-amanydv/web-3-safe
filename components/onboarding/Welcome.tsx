@@ -198,9 +198,7 @@ export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {
       passRef.current[index - 1]?.focus()
     }
     console.log(inputPass)
-
   }
-
   return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
   <div className="text-white py-10 flex flex-col items-center justify-center">
   <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>

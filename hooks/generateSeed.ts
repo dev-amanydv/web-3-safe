@@ -2,8 +2,12 @@
 
 import { generateMnemonic } from "bip39";
 
-export async function GenerateSeedPhrase (){
-    const generatedSeed = generateMnemonic();
-    
-    return generatedSeed;
+let cachedSeed: string | null = null;
+
+export function GenerateSeedPhrase() {
+  if (!cachedSeed) {
+    cachedSeed = generateMnemonic();
+    console.log("Seed phrase: ", cachedSeed);
+  }
+  return cachedSeed;
 }

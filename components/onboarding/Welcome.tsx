@@ -19,6 +19,12 @@ type networkSelectScreenProps = {
   updateNetwork: (args: string) => void;
 }
 
+type generateSeedProps = {
+  onCopySeed: (seedPhrase: string) => void;
+  currentCopy: boolean;
+  updateCopy:(args: boolean) => void;
+}
+
 type passwordSetScreenProps = {
   onSetPassword: (pass: string) => void;
 }
@@ -29,6 +35,7 @@ export default function OnBoarding () {
   const [network, setNetwork] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const [copied, setCopied] = useState(false)
 
   const nextStep = () => {
     if ( step < 6 ) {
@@ -46,6 +53,14 @@ export default function OnBoarding () {
   const handleNetworkSelect = (networkType: string) => {
     setNetwork(networkType);
     nextStep()
+  }
+  const handleCopyToClipboard = (seedPhrase: string) => {
+    try {
+      navigator.clipboard.writeText(seedPhrase);
+      setCopied(true)
+    } catch (error) {
+      console.log(error)
+    } finally { nextStep() }
   }
 
   const handlePassword = (pass: string) => {
@@ -72,9 +87,9 @@ export default function OnBoarding () {
       case 2 :
         return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
-        return <NewSeedPhrase />;
+        return <NewSeedPhrase currentCopy={copied} updateCopy={setCopied} onCopySeed={handleCopyToClipboard} />;
       case 4 : 
-        return <EnterSeedPhrase />;
+        return <EnterSeedPhrase  />;
       case 5 : 
         return <PasswordSetting onSetPassword={handlePassword} />;
       case 6 : 
@@ -101,9 +116,9 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
     
     return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
-            <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>
+            <div className="size-20 rounded-full flex text-sm justify-center items-center mb-5 bg-gray-900"><Image src={'/web3safeLogoMark.svg'} priority={true} height={100} width={100} alt="Web3Safe Logo by Aman Yadav | Full-Stack Developer" /></div>
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
-              Welcome to <span className={`${poppins.className} text-[#5090F2] font-bold`}>Web3</span><span className={`${poppins.className} font-bold`}>Safe</span>
+              Welcome to <span className={`${poppins.className} text-[rgb(80,144,242)] font-bold`}>Web3</span><span className={`${poppins.className} font-bold`}>Safe</span>
             </div>
             <div className="text-[#969FAE] text-md font-medium">
               You can send and recieve crypto by using this wallet
@@ -145,17 +160,19 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
     </div>
 }
 
-export const NewSeedPhrase =  () => {
+export const NewSeedPhrase =  ({onCopySeed, currentCopy, updateCopy}: generateSeedProps) => {
+
   const [seedPhrase, setSeedPhrase] = useState("");
-  const inputBoxes = Array(12).fill(null);
+  const [accept, setAccept] = useState(false)
 
   useEffect(() => {
     const mnemonic = GenerateSeedPhrase();
     setSeedPhrase(mnemonic);
-    console.log("mnemonic: ", seedPhrase);
   }, []);
+  const words = seedPhrase.split(" ");
 
-  return <div className="gap-30 justify-between flex flex-col items-center max-w-2xl w-full">
+  
+  return <div className="gap-20 justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
               Secret Recovery Phrase
@@ -166,25 +183,47 @@ export const NewSeedPhrase =  () => {
         </div>
         <div className="grid grid-cols-4 gap-5">
           {
-            inputBoxes.map((index) => (
-              <input readOnly value={'Aman'} key={index} type="text" className="w-20 h-10 text-center border-b-2 border-[#969FAE] text-white" />
+            words.map((word, index) => (
+              <input readOnly value={word} key={index} type="text" className="w-20 h-10 focus:outline-0 text-center border-b-2 border-[#969FAE] text-white" />
             ))
           }
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex gap-5">
-            <input type="checkbox" name="Terms and Condition" id="" />
+            <input checked={accept} className="cursor-pointer size-5" onChange={() => { setAccept(!accept)}} type="checkbox" name="Terms and Condition" id="" />
             <h1 className="font-semibold">I saved my secret <span className="">Recovery Phrase</span></h1>
           </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-            <button className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Copy Seed Phrase</button>
+            <button disabled={!accept} onClick={() => {onCopySeed(seedPhrase)}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">{ currentCopy === false ? "Copy seed phrase" : "Copied!"}</button>
           </div>
         </div>
     </div>
 }
 
 export const EnterSeedPhrase = () => {
-  return <div></div>
+  const inputBoxes = Array(12).fill(null);
+  return <div className="gap-20 justify-between flex flex-col items-center max-w-2xl w-full">
+  <div className="text-white py-10 flex flex-col items-center justify-center">
+      <div className="text-2xl rounded-full text-white font-sans font-semibold">
+        Secret Recovery Phrase
+      </div>
+      <div className="text-[#969FAE] text-md font-medium">
+       Save these words in a safe place.
+      </div>
+  </div>
+  <div className="grid grid-cols-4 gap-5">
+    {
+      inputBoxes.map((_, index) => (
+        <input key={index} type="text" className="w-20 h-10 focus:outline-0 text-center border-b-2 border-[#969FAE] text-white" />
+      ))
+    }
+  </div>
+  <div className="text-white flex gap-10 flex-col items-center w-full">
+    <div className="flex justify-center gap-4 w-full max-w-md flex-col">
+      <button onClick={() => {}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Paste seed phrase</button>
+    </div>
+  </div>
+</div>
 }
 
 export const PasswordSetting = ({onSetPassword}: passwordSetScreenProps) => {

@@ -147,7 +147,7 @@ export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateN
 
 export const NewSeedPhrase =  () => {
   const [seedPhrase, setSeedPhrase] = useState("");
-  const arr = 
+  const inputBoxes = Array(12).fill(null);
 
   useEffect(() => {
     const mnemonic = GenerateSeedPhrase();
@@ -155,7 +155,7 @@ export const NewSeedPhrase =  () => {
     console.log("mnemonic: ", seedPhrase);
   }, []);
 
-  return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
+  return <div className="gap-30 justify-between flex flex-col items-center max-w-2xl w-full">
         <div className="text-white py-10 flex flex-col items-center justify-center">
             <div className="text-2xl rounded-full text-white font-sans font-semibold">
               Secret Recovery Phrase
@@ -164,11 +164,12 @@ export const NewSeedPhrase =  () => {
              Save these words in a safe place.
             </div>
         </div>
-        <div>
+        <div className="grid grid-cols-4 gap-5">
           {
-
+            inputBoxes.map((index) => (
+              <input readOnly value={'Aman'} key={index} type="text" className="w-20 h-10 text-center border-b-2 border-[#969FAE] text-white" />
+            ))
           }
-          <input readOnly value={'Aman'} type="text" className="w-20 h-10 bg-gray-800 text-white" />
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
           <div className="flex gap-5">

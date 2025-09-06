@@ -1,16 +1,16 @@
 import { SeedContext } from "@/utils/SeedContext";
-import { Poppins } from "next/font/google";
 import { useContext, useEffect, useState } from "react";
 
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["100", "200", "300","400", "500", "600", "700", "800"],
-  });
 
   export const EnterSeedPhrase = () => {
     const [seedWords, setSeedWords] = useState<string[]>(Array(12).fill(""));
-    const [loading, setisLoading] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+    const [verified, setVerified] = useState<boolean | null>(null);
+
+    const seed  = useContext(SeedContext);
+    console.log("Recieved seed: ", seed)
+
+    const seedArray = seed.split(" ");
     const handlePaste = async () => {
       try {
         const text = await navigator.clipboard.readText();
@@ -43,10 +43,21 @@ const poppins = Poppins({
     } ,[seedWords])
 
     const verify = async () => {
-        setisLoading(true);
+        setLoading(true);
         try {
+          const isSame = seedWords.length === seedArray.length && seedWords.every((word, idx) => word === seedArray[idx])
+          console.log("ENTERED PHRASE: ", seedWords);
+          console.log("ACTUAL PHRASE: ", seedArray);
+          if (isSame){
+            setVerified(true);
+            console.log("SEED PHRASE VERIFIED");
+          } else {
+            console.log("NOT VERIFIED")
+          }
         } catch (error) {
-            
+          console.log('Error in verifying Seed Phrase: ', error);
+        } finally {
+          setLoading(false)
         }
     }
   
@@ -69,7 +80,7 @@ const poppins = Poppins({
     <div className="text-white flex gap-10 flex-col items-center w-full">
       <div className="flex justify-center gap-4 w-full max-w-md flex-col">
         <button onClick={() => {handlePaste()}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-gray-950 hover:bg-gray-900 rounded-md py-3 border-[0.5px] border-gray-200 text-white">Paste</button>
-        <button onClick={() => {}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Next</button>
+        <button onClick={() => {verify()}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">{loading === true ? "Verifying..." : "Next"}</button>
       </div>
     </div>
   </div>

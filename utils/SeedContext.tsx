@@ -18,8 +18,8 @@ export function SeedProvider ({ children }: { children: React.ReactNode}) {
     }, [])
     
     return (
-        <SeedContext.Provider value={seed} >
-        {children}
+        <SeedContext.Provider value={{seed, setSeed}}>
+            {children}
         </SeedContext.Provider>
     )
 }

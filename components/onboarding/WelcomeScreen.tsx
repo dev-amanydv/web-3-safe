@@ -25,8 +25,8 @@ export const WelcomeScreen = ({onStart}: welcomeScreenProps) => {
             </div>
         </div>
         <div className="text-white flex gap-10 flex-col items-center w-full">
-          <div className="flex gap-5">
-            <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} name="Terms and Condition" id="" />
+          <div className="flex items-center gap-5">
+            <input type="checkbox" className="size-4" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} name="Terms and Condition" id="" />
             <h1 className="font-semibold">I agree to the <span className="">Terms of Service</span></h1>
           </div>
           <div className="flex justify-center gap-4 w-full max-w-md flex-col">

@@ -1,4 +1,5 @@
 import { SeedContext } from "@/utils/SeedContext";
+import { ToastContext } from "@/utils/ToastContext";
 import { useContext, useEffect, useState } from "react";
 
 
@@ -9,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 
     const seed  = useContext(SeedContext);
     console.log("Recieved seed: ", seed)
+    const { showToast }  = useContext(ToastContext)!;
 
     const seedArray = seed.split(" ");
     const handlePaste = async () => {
@@ -50,6 +52,7 @@ import { useContext, useEffect, useState } from "react";
           console.log("ACTUAL PHRASE: ", seedArray);
           if (isSame){
             setVerified(true);
+            showToast("Congratulations! You can now access your all wallets and make payments.", "Verification Successfull", "Success")
             console.log("SEED PHRASE VERIFIED");
           } else {
             console.log("NOT VERIFIED")

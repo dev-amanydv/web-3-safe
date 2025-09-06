@@ -1,33 +1,60 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { MdErrorOutline } from "react-icons/md";
+import { AiOutlineInfoCircle, AiOutlineWarning } from "react-icons/ai";
 
 type ToastType = {
     message: string;
+    title: string;
     type: 'Success' | 'Warning' | 'Error' | 'Information';
 }
 
-export default function Toast ({message,type}: ToastType) {
+export default function Toast({message, title, type }: ToastType) {
+    const [visible, setVisible] = useState(true);
+    const [animate, setAnimate] = useState("translate-y-[-100%] opacity-0");
 
-    const [count, setCount] = useState(0);
     useEffect(() => {
-        setInterval(() => {
-            setCount(prev => prev + 1)
-        }, 1000)
-    }, [])
-    
+        setTimeout(() => setAnimate("translate-y-0 opacity-100"), 50);
+
+        const timer = setTimeout(() => {
+            setAnimate("translate-y-[-100%] opacity-0");
+            setTimeout(() => setVisible(false), 300);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const config = {
+        Success: {
+            title: title,
+            icon: <FaRegCheckCircle className="size-5 mt-1 text-[#65F07B]" />
+        },
+        Warning: {
+            title: title,
+            icon: <AiOutlineWarning className="size-5 mt-1 text-yellow-400" />
+        },
+        Error: {
+            title: title,
+            icon: <MdErrorOutline className="size-5 mt-1 text-red-500" />
+        },
+        Information: {
+            title: title,
+            icon: <AiOutlineInfoCircle className="size-5 mt-1 text-blue-400" />
+        }
+    }[type];
+
+    if (!visible) return null;
 
     return (
-        <div className="fixed top-0 flex justify-center mt-15 left-0 w-full min-h-15">
-            <div className="max-w-lg border-[1px] border-[#3D3D3D] w-full items-start flex gap-5 px-5 py-3 bg-gray-600/30 backdrop-blur-lg rounded-2xl">
-                <div>
-                    <FaRegCheckCircle className="size-5 mt-3 text-[#65F07B]"/>
-                </div>
+        <div className={`fixed top-5 flex justify-center left-0 w-full transition-all duration-300 ease-in-out ${animate}`}>
+            <div className="max-w-lg border border-[#3D3D3D] w-full items-start flex gap-3 px-5 py-3 bg-gray-600/30 backdrop-blur-lg rounded-2xl">
+                <div>{config.icon}</div>
                 <div className="flex flex-col gap-1">
-                    <div className="text-white font-semibold">Success Notification</div>
-                    <div className="text-[12px]">Congratulations! Your seed phrase has been verified. You can now access all you crypto wallets.</div>
+                    <div className="text-white font-semibold">{config.title}</div>
+                    <div className="text-[12px] text-white">{message}</div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

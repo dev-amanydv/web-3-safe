@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -7,6 +8,7 @@ const poppins = Poppins({
   });
 
   export const CompletionScreen = () => {
+    const router = useRouter();
 
     return <div className=" justify-between gap-50 flex flex-col items-center max-w-2xl w-full">
     <div className="text-white py-10 flex flex-col items-center justify-center">
@@ -21,7 +23,7 @@ const poppins = Poppins({
     <div className="text-white flex gap-10 flex-col items-center w-full">
       
       <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-        <button onClick={() => { }} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Open <span className={`${poppins.className} text-[#316dc8]`}>Web3</span><span className={`${poppins.className}`}>Safe</span></button>
+        <button onClick={() => {router.push('/dashboard')}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Open <span className={`${poppins.className} text-[#316dc8]`}>Web3</span><span className={`${poppins.className}`}>Safe</span></button>
       </div>
     </div>
   </div>

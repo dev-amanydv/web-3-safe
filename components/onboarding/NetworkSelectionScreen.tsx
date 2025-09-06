@@ -16,7 +16,7 @@ const poppins = Poppins({
   export const NetworkSelectionScreen = ({onSelectNetwork, currentNetwork, updateNetwork}: networkSelectScreenProps) => {
 
     return <div className="gap-70 justify-between flex flex-col items-center max-w-2xl w-full">
-      <div className="text-white py-10 flex flex-col items-center justify-center">
+      <div className="text-white flex flex-col items-center justify-center">
         <div className="text-2xl rounded-full text-white font-sans font-semibold">
           Select one network
         </div>
@@ -30,7 +30,7 @@ const poppins = Poppins({
       </div>
       <div className="text-white flex gap-10 flex-col items-center w-full">
         <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-          <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork),console.log("selected network: ", currentNetwork)}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
+          <button disabled={!currentNetwork}  onClick={() => {onSelectNetwork(currentNetwork),console.log("selected network: ", currentNetwork)}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Set up wallet</button>
         </div>
       </div>
       </div>

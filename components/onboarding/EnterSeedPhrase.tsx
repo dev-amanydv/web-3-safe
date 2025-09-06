@@ -3,7 +3,7 @@ import { ToastContext } from "@/utils/ToastContext";
 import { useContext, useEffect, useState } from "react";
 
 
-  export const EnterSeedPhrase = () => {
+  export const EnterSeedPhrase = ({onNext}: {onNext: () => void}) => {
     const [seedWords, setSeedWords] = useState<string[]>(Array(12).fill(""));
     const [loading, setLoading] = useState(false);
     const [verified, setVerified] = useState<boolean | null>(null);
@@ -52,10 +52,12 @@ import { useContext, useEffect, useState } from "react";
           console.log("ACTUAL PHRASE: ", seedArray);
           if (isSame){
             setVerified(true);
-            showToast("Congratulations! You can now access your all wallets and make payments.", "Verification Successfull", "Success")
-            console.log("SEED PHRASE VERIFIED");
+            localStorage.setItem("seedPhrase", seed);
+            showToast("Congratulations! You can now access your all wallets and make payments.", "Verification Successfull!", "Success")
+            onNext();
           } else {
-            console.log("NOT VERIFIED")
+            setVerified(false);
+            showToast("Sorry! You have entered an wrong seed phrase.", "Verification Failed", "Error")
           }
         } catch (error) {
           console.log('Error in verifying Seed Phrase: ', error);
@@ -65,8 +67,8 @@ import { useContext, useEffect, useState } from "react";
     }
   
     return <div className="gap-20 justify-between flex flex-col items-center max-w-2xl w-full">
-    <div className="text-white py-10 flex flex-col items-center justify-center">
-        <div className="text-2xl rounded-full text-white font-sans font-semibold">
+    <div className="text-white flex flex-col items-center justify-center">
+        <div className="text-2xl rounded-full text-[#ffffff] font-sans font-semibold">
           Secret Recovery Phrase
         </div>
         <div className="text-[#969FAE] text-md font-medium">

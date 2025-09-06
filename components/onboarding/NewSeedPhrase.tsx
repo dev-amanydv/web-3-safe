@@ -26,7 +26,7 @@ type generateSeedProps = {
     const words = seedPhrase.split(" ");
     
     return <div className="gap-20 justify-between flex flex-col items-center max-w-2xl w-full">
-          <div className="text-white py-10 flex flex-col items-center justify-center">
+          <div className="text-white flex flex-col items-center justify-center">
               <div className="text-2xl rounded-full text-white font-sans font-semibold">
                 Secret Recovery Phrase
               </div>

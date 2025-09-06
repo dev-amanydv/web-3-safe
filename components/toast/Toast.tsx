@@ -47,8 +47,8 @@ export default function Toast({message, title, type }: ToastType) {
     if (!visible) return null;
 
     return (
-        <div className={`fixed top-5 flex justify-center left-0 w-full transition-all duration-300 ease-in-out ${animate}`}>
-            <div className="max-w-lg border border-[#3D3D3D] w-full items-start flex gap-3 px-5 py-3 bg-gray-600/30 backdrop-blur-lg rounded-2xl">
+        <div className={`fixed top-8 flex justify-center left-0 w-full transition-all duration-300 ease-in-out ${animate}`}>
+            <div className="max-w-lg border border-[#3D3D3D] w-full items-start flex gap-3 px-5 py-3 bg-gray-700/30 backdrop-blur-sm rounded-2xl">
                 <div>{config.icon}</div>
                 <div className="flex flex-col gap-1">
                     <div className="text-white font-semibold">{config.title}</div>

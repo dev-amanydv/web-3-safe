@@ -1,6 +1,6 @@
 "use client";
 import { Poppins } from "next/font/google";
-import {useState } from "react"
+import {useContext, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { NetworkSelectionScreen } from "./NetworkSelectionScreen";
@@ -8,6 +8,7 @@ import { NewSeedPhrase } from "./NewSeedPhrase";
 import { EnterSeedPhrase } from "./EnterSeedPhrase";
 import { PasswordSetting } from "./PasswordSetting";
 import { CompletionScreen } from "./CompletionScreen";
+import { ToastContext } from "@/utils/ToastContext";
 
 
 export default function OnBoarding () {
@@ -18,6 +19,7 @@ export default function OnBoarding () {
   const [isLoading, setisLoading] = useState(false);
   const [copied, setCopied] = useState(false)
 
+  const { showToast } = useContext(ToastContext)!;
   const nextStep = () => {
     if ( step < 6 ) {
       setStep(step + 1);
@@ -33,12 +35,14 @@ export default function OnBoarding () {
 
   const handleNetworkSelect = (networkType: string) => {
     setNetwork(networkType);
+    localStorage.setItem("Network", networkType);
     nextStep()
   }
   const handleCopyToClipboard = (seedPhrase: string) => {
     try {
       navigator.clipboard.writeText(seedPhrase);
-      setCopied(true)
+      setCopied(true);
+      showToast("Your seed is succesfully copied!", "Copied", "Information")
     } catch (error) {
       console.log(error);
     } finally { nextStep() }
@@ -49,17 +53,7 @@ export default function OnBoarding () {
     nextStep()
   }
 
-  const finishOnBoarding = () => {
-    setisLoading(true);
-
-    try {
-      console.log("OnBoarding complete... Finishing setup")
-    } catch (error) {
-      
-    } finally {
-      setisLoading(false);
-    }
-  }
+  
 
   const renderSteps = () => {
     switch (step){
@@ -70,7 +64,7 @@ export default function OnBoarding () {
       case 3 : 
         return <NewSeedPhrase currentCopy={copied} updateCopy={setCopied} onCopySeed={handleCopyToClipboard} />;
       case 4 : 
-        return <EnterSeedPhrase  />;
+        return <EnterSeedPhrase onNext={nextStep}  />;
       case 5 : 
         return <PasswordSetting onSetPassword={handlePassword} />;
       case 6 : 
@@ -80,13 +74,13 @@ export default function OnBoarding () {
     }
   }
 
-  return <div className="flex flex-col py-10 max-w-2xl w-full">
-    {step > 1 && step < 4 && (
+  return <div className="flex flex-col max-w-2xl w-full">
+    {step > 1 && step < 6 && (
       <button className="cursor-pointer text-white" onClick={prevStep}>
     <FaArrowLeft/>
     </button>
     )}
-    <div className="h-[500px]">
+    <div className="h-[500px] mt-10">
     {renderSteps()}
     </div>
 </div>

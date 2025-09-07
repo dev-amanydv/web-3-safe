@@ -1,36 +1,37 @@
-import { SeedContext } from "@/utils/SeedContext";
+import { MnemonicContext } from "@/utils/MenmonicContext";
 import { ToastContext } from "@/utils/ToastContext";
+import { mnemonicToSeed, mnemonicToSeedSync } from "bip39";
 import { useContext, useEffect, useState } from "react";
 
 
-  export const EnterSeedPhrase = ({onNext}: {onNext: () => void}) => {
-    const [seedWords, setSeedWords] = useState<string[]>(Array(12).fill(""));
+  export const EnterMnemonic = ({onNext}: {onNext: () => void}) => {
+    const [mnemonicWords, setMnemonicWords] = useState<string[]>(Array(12).fill(""));
     const [loading, setLoading] = useState(false);
     const [verified, setVerified] = useState<boolean | null>(null);
 
-    const seed  = useContext(SeedContext);
-    console.log("Recieved seed: ", seed)
+    const mnemonic  = useContext(MnemonicContext);
+    console.log("Recieved seed: ", mnemonic)
     const { showToast }  = useContext(ToastContext)!;
 
-    const seedArray = seed.split(" ");
+    const mnemonicArray = mnemonic.split(" ");
     const handlePaste = async () => {
       try {
         const text = await navigator.clipboard.readText();
         const words = text.trim().split(/\s+/).slice(0, 12);
-        const filled = [...seedWords];
+        const filled = [...mnemonicWords];
         words.forEach((word, idx) => {
           if (idx < 12) filled[idx] = word;
         });
-        setSeedWords(filled);
+        setMnemonicWords(filled);
       } catch (error) {
         console.log("Failed to read clipboard: ", error);
       }
     }
     
     const handleChange = (value: string, index: number) => {
-      const updated = [...seedWords];
+      const updated = [...mnemonicWords];
        updated[index] = value;
-       setSeedWords(updated);
+       setMnemonicWords(updated);
     }
   
     useEffect(() => {
@@ -42,18 +43,20 @@ import { useContext, useEffect, useState } from "react";
       }
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
-    } ,[seedWords])
+    } ,[mnemonicWords])
 
     const verify = async () => {
         setLoading(true);
         try {
-          const isSame = seedWords.length === seedArray.length && seedWords.every((word, idx) => word === seedArray[idx])
-          console.log("ENTERED PHRASE: ", seedWords);
-          console.log("ACTUAL PHRASE: ", seedArray);
+          const isSame = mnemonicWords.length === mnemonicArray.length && mnemonicWords.every((word, idx) => word === mnemonicArray[idx])
+          console.log("ENTERED PHRASE: ", mnemonicWords);
+          console.log("ACTUAL PHRASE: ", mnemonicArray);
           if (isSame){
             setVerified(true);
-            localStorage.setItem("seedPhrase", seed);
-            showToast("Congratulations! You can now access your all wallets and make payments.", "Verification Successfull!", "Success")
+            showToast("Congratulations! You can now access your all wallets and make payments.", "Verification Successfull!", "Success");
+            localStorage.setItem("seedPhrase", mnemonic);
+            const seed = await mnemonicToSeed(mnemonic);
+            console.log("Real seed: ", seed)
             onNext();
           } else {
             setVerified(false);
@@ -77,7 +80,7 @@ import { useContext, useEffect, useState } from "react";
     </div>
     <div className="grid grid-cols-4 gap-5">
       {
-        seedWords.map((word, index) => (
+        mnemonicWords.map((word, index) => (
           <input key={index} value={word} onChange={(e) => handleChange(e.target.value, index)} type="text" className="w-20 h-10 focus:outline-0 text-center border-b-2 border-[#969FAE] text-white" />
         ))
       }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import { SeedProvider } from "@/utils/SeedContext";
+import { SeedProvider } from "@/utils/MenmonicContext";
 import { ToastProvider } from "@/utils/ToastContext";
 
 const inter = Inter({

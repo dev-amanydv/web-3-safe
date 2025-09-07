@@ -8,22 +8,25 @@ const poppins = Poppins({
   });
 
 
-type generateSeedProps = {
+type generateMnemonicProps = {
     onCopySeed: (seedPhrase: string) => void;
     currentCopy: boolean;
     updateCopy:(args: boolean) => void;
   }
 
-  export const NewSeedPhrase =  ({onCopySeed, currentCopy, updateCopy}: generateSeedProps) => {
+  export const NewMnemonic =  ({onCopySeed, currentCopy, updateCopy}: generateMnemonicProps) => {
 
-    const [seedPhrase, setSeedPhrase] = useState("");
+    const [mnemonic, setMnemonic] = useState("");
     const [accept, setAccept] = useState(false)
   
     useEffect(() => {
-      const mnemonic = GenerateSeedPhrase();
-      setSeedPhrase(mnemonic);
+      async function handleGenerateSeedAndKeys (){
+        const generatedMnemonic = await GenerateSeedPhrase("Solana");
+        setMnemonic(generatedMnemonic);
+      };
+      handleGenerateSeedAndKeys()
     }, []);
-    const words = seedPhrase.split(" ");
+    const words = mnemonic.split(" ");
     
     return <div className="gap-20 justify-between flex flex-col items-center max-w-2xl w-full">
           <div className="text-white flex flex-col items-center justify-center">
@@ -47,7 +50,7 @@ type generateSeedProps = {
               <h1 className="font-semibold">I saved my secret <span className="">Recovery Phrase</span></h1>
             </div>
             <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-              <button disabled={!accept} onClick={() => {onCopySeed(seedPhrase)}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">{ currentCopy === false ? "Copy seed phrase" : "Copied!"}</button>
+              <button disabled={!accept} onClick={() => {onCopySeed(mnemonic)}} className="w-full cursor-pointer disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">{ currentCopy === false ? "Copy seed phrase" : "Copied!"}</button>
             </div>
           </div>
       </div>

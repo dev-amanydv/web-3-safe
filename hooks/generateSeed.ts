@@ -1,16 +1,19 @@
 "use client";
 
-import { generateMnemonic, mnemonicToSeedSync } from "bip39";
+import { GenerateKeyPairs } from "@/utils/GenerateKeyPairs";
+import { generateMnemonic, mnemonicToSeed } from "bip39";
 
-let cachedSeed: string | null = null;
+let cachedMnemonic: string | null = null;
 
 
-export function GenerateSeedPhrase() {
-  if (!cachedSeed) {
-    cachedSeed = generateMnemonic();
-    const realSeed = mnemonicToSeedSync(cachedSeed)
-    console.log("Seed phrase: ", cachedSeed);
-    console.log("real seed: ", realSeed)
+export async function GenerateSeedPhrase(type: "Solana" | "Ethereum") {
+  if (!cachedMnemonic) {
+    cachedMnemonic = generateMnemonic();
+    const seed = await mnemonicToSeed(cachedMnemonic)
+    console.log("Seed phrase: ", cachedMnemonic);
+    console.log("real seed: ", seed);
+    GenerateKeyPairs(seed, "Solana");
+
   }
-  return cachedSeed;
+  return cachedMnemonic;
 }

@@ -23,7 +23,7 @@ const poppins = Poppins({
     <div className="text-white flex gap-10 flex-col items-center w-full">
       
       <div className="flex justify-center gap-4 w-full max-w-md flex-col">
-        <button onClick={() => {router.push('/dashboard')}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Open <span className={`${poppins.className} text-[#316dc8]`}>Web3</span><span className={`${poppins.className}`}>Safe</span></button>
+        <button onClick={() => {router.push('/wallet')}} className="w-full disabled:bg-[#868789] disabled:text-[#111217] font-semibold bg-white hover:bg-gray-200 rounded-md py-3 text-black">Open <span className={`${poppins.className} text-[#316dc8]`}>Web3</span><span className={`${poppins.className}`}>Safe</span></button>
       </div>
     </div>
   </div>

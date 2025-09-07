@@ -4,8 +4,8 @@ import {useContext, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { NetworkSelectionScreen } from "./NetworkSelectionScreen";
-import { NewSeedPhrase } from "./NewSeedPhrase";
-import { EnterSeedPhrase } from "./EnterSeedPhrase";
+import { NewMnemonic } from "./NewMnemonic";
+import { EnterMnemonic } from "./EnterMnemonic";
 import { PasswordSetting } from "./PasswordSetting";
 import { CompletionScreen } from "./CompletionScreen";
 import { ToastContext } from "@/utils/ToastContext";
@@ -62,9 +62,9 @@ export default function OnBoarding () {
       case 2 :
         return <NetworkSelectionScreen currentNetwork={network} updateNetwork={setNetwork} onSelectNetwork={handleNetworkSelect}  />;
       case 3 : 
-        return <NewSeedPhrase currentCopy={copied} updateCopy={setCopied} onCopySeed={handleCopyToClipboard} />;
+        return <NewMnemonic currentCopy={copied} updateCopy={setCopied} onCopySeed={handleCopyToClipboard} />;
       case 4 : 
-        return <EnterSeedPhrase onNext={nextStep}  />;
+        return <EnterMnemonic onNext={nextStep}  />;
       case 5 : 
         return <PasswordSetting onSetPassword={handlePassword} />;
       case 6 : 
